@@ -18,7 +18,6 @@ public class Login {
 		Scanner sc1 = new Scanner(System.in);
 		
 		Scanner sc=new Scanner(System.in);
-		//String email="";
 		String password=null;
 		
 		System.out.println("Please enter registered Email: ");
@@ -50,11 +49,6 @@ public class Login {
 						ProductDetails pd = new ProductDetails();
 						pd.viewProductDetails();
 						pd.choice();
-//						if(decision==101) {
-//						Billing bill=new Billing();
-//						bill.generateInvoice(pd,email);
-//						pd.inventoryAdjustment(pd,email);
-						//}
 						
 						break;
 					case 2:
@@ -62,22 +56,22 @@ public class Login {
 						break;
 					default :
 							System.out.println("Ops, please select correct option");
-							
+							System.out.println("Logging Out");
+							login();
 					}
-					
-					
 				}
 			}
 			else {
-			System.out.println("Authentication Unsuccessfull.");
-			System.out.println("Email is not registered!!!");
+				
+				System.out.println("Authentication Unsuccessfull.");
+				System.out.println("Email is not registered!!!");
 			
-			Registration r = new Registration();
-			r.register_user();
+				Registration r = new Registration();
+				r.register_user();
 			}
 			con.close();
 			stmt.close();
-		}	catch(Exception e){ System.out.println(e);} 
-	}
-	
+		}	
+		catch(Exception e){ System.out.println(e);} 
+	}	
 }

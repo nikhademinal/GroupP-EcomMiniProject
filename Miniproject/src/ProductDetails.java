@@ -216,6 +216,13 @@ public class ProductDetails {
 		bill.generateInvoice(this,email);
 		inventoryAdjustment(this,email);
 		
+		System.out.println();
+		System.out.println();
+		System.out.println("Thank you for shopping with us!!!!");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
 	}
 	
 	void inventoryAdjustment(ProductDetails p, String email)
@@ -293,90 +300,5 @@ public class ProductDetails {
 		}	catch(Exception e){ System.out.println(e);} 
 		return productname;
 	}
-	
-	
-	
-//	void buy()
-//	{
-//		int choice=0;
-//		int exit = 0;
-//		int price=0;
-//
-//			System.out.println("Enter 1:   To Select the product id's to add the product to cart: ");
-//			System.out.println("Enter 100: To exit ");
-//			Scanner sc=new Scanner(System.in);
-//			choice=sc.nextInt();
-//			while(choice!=100)
-//			{	
-//				if(exit==2)
-//				{
-//					break;
-//				}
-//				
-//				System.out.println("Enter product id to buy:");
-//				int product_id=sc.nextInt();
-//				if(product_id<10)
-//				{
-//					System.out.println("Enter Quantity: ");
-//					int quantity=sc.nextInt();	
-//					addtocart.put(product_id,quantity);
-//			try {
-//				String sql="select price from products where Product_Id=?";
-//				Class.forName("com.mysql.cj.jdbc.Driver");
-//				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/miniproject","root","Minal@09021998");
-//				PreparedStatement stmt=con.prepareStatement(sql); 
-//				stmt.setInt(1,product_id);
-//				ResultSet rs=stmt.executeQuery();
-//				if(rs.next())
-//				{
-//					price=rs.getInt(1);
-//				}
-//				
-//				con.close();
-//				stmt.close();
-//			}	catch(Exception e){ System.out.println(e);} 
-//			int intermid=price*quantity;
-//			totalammount+=intermid;
-//			
-//			
-//			System.out.println("Total Ammount to be Paid: "+totalammount);
-//			//System.out.println("1. Checkout");
-//			//System.out.println("2. Continue");
-//			
-//			//exit = sc.nextInt();
-//			while(exit>2||exit==0)
-//			{
-//			System.out.println("1. Checkout");
-//			System.out.println("2. Continue");
-//			
-//			exit = sc.nextInt();
-//			
-//			if(exit==1)
-//			{
-//				System.out.println("Total Amount: "+totalammount);
-//				System.out.println("||Product_id||"+" "+"Quantity||");
-//				for(Map.Entry m : addtocart.entrySet()){    
-//				    System.out.println("    "+m.getKey()+"  	       "+m.getValue());    
-//				   }
-//				break;
-//			}
-//			else if(exit>2||exit==0)
-//			{
-//				System.out.println("Invalid Choice, Try Again!!!");
-//			}
-//			}
-//			if(exit==1)
-//			{
-//				break;
-//			}
-//			}
-//			else 
-//			{
-//				System.out.println("Incorrect product id");
-//			}
-//				
-//		}
-//	}
-//	
 
 }
