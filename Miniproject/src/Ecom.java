@@ -54,7 +54,7 @@ public class Ecom{
 			System.out.println("Incorrect Choice!!");
 			break;
 		}
-	}
 		
+	}
 	}
 }

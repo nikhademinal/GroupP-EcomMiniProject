@@ -48,7 +48,7 @@ public class Login {
 					case 1 :
 						ProductDetails pd = new ProductDetails();
 						pd.viewProductDetails();
-						pd.choice();
+						pd.choice(email);
 						
 						break;
 					case 2:
@@ -64,10 +64,26 @@ public class Login {
 			else {
 				
 				System.out.println("Authentication Unsuccessfull.");
-				System.out.println("Email is not registered!!!");
-			
+				System.out.println("Invalid Credentials..");
+				System.out.println("Select choice:");
+				System.out.println("1. Login Again");
+				System.out.println("2. Register");
+				
+				int b = sc.nextInt();
+				
+				if(b==1)
+				{
+					login();
+				}
+				else if (b==2)
+				{
 				Registration r = new Registration();
 				r.register_user();
+				}
+				else
+				{
+					System.out.println("Invalid options..");
+				}
 			}
 			con.close();
 			stmt.close();

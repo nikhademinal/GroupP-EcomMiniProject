@@ -50,7 +50,7 @@ public class ProductDetails {
 		System.out.println();
 	}
 	
-	void choice()
+	void choice(String email)
 	{
 		int choice=0;
 		System.out.println("1. Purchase Products");
@@ -60,7 +60,7 @@ public class ProductDetails {
 		
 		if(choice==1)
 		{
-			buy();
+			buy(email);
 		}
 		else if(choice==2)
 		{
@@ -69,12 +69,12 @@ public class ProductDetails {
 		else
 		{
 			System.out.println("Invalid");
-			choice();
+			choice(email);
 		}
 		
 	}
 	
-	void buy()
+	void buy(String email)
 	{
 		int quantity=0;
 		
@@ -92,7 +92,7 @@ public class ProductDetails {
 			if(availableQuantity==0)
 			{	
 				System.out.println("Selected Product is OUT OF STOCK!");
-				buy();
+				buy(email);
 			}
 			else if(quantity<=availableQuantity && quantity>0)
 			{
@@ -120,29 +120,29 @@ public class ProductDetails {
 	
 			System.out.println("Total Ammount to be Paid: "+totalammount);
 			
-			purchaseAnotherProduct();
+			purchaseAnotherProduct(email);
 			}
 			else if(quantity==0)
 			{
 				System.out.println("Quantity cant be 0");
 				System.out.println("Please retry!");
-				buy();
+				buy(email);
 			}
 			else if(quantity<0)
 			{
 				System.out.println("Quantity cant be -ve");
 				System.out.println("Please retry!");
-				buy();
+				buy(email);
 			}
 			else {
 				System.out.println("Available Stock for the selected product is "+getQuantityfromDB(product_id));
 				System.out.println("Please retry!");
-				buy();
+				buy(email);
 			}
 		}		
 	}
 	
-	void purchaseAnotherProduct()
+	void purchaseAnotherProduct(String email)
 	{
 		Scanner sc = new Scanner(System.in);
 		int exit=0;
@@ -158,10 +158,10 @@ public class ProductDetails {
 		
 		case 1 :
 			
-			getbill();
+			getbill(email);
 			break;
 		case 2:
-			buy();
+			buy(email);
 			break;
 		case 3:
 			viewcart();
@@ -171,14 +171,14 @@ public class ProductDetails {
 			switch(option)
 			{
 			case 1 :
-				getbill();
+				getbill(email);
 				break;
 			case 2:
-				buy();
+				buy(email);
 				break;
 			default:
 				System.out.println("Invalid Input");
-				purchaseAnotherProduct();
+				purchaseAnotherProduct(email);
 			break;
 				
 			}
@@ -186,7 +186,7 @@ public class ProductDetails {
 		
 		default:
 			System.out.println("Invalid input");
-			purchaseAnotherProduct();
+			purchaseAnotherProduct(email);
 			break;
 		}
 		
@@ -210,7 +210,7 @@ public class ProductDetails {
 		System.out.println("_________________________________________________________");
 	}
 	
-	void getbill()
+	void getbill(String email)
 	{
 		Billing bill=new Billing();
 		bill.generateInvoice(this,email);
