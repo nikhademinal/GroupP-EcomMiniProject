@@ -1,5 +1,8 @@
 package MiniProject.MiniProjectWithHibernate;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import org.hibernate.cfg.Configuration;
 @Table(name="product")
 public class ProductDetails {
 	
+	int totalammount;
 	@Id
 	private int id;
 	private String name;
@@ -182,8 +186,9 @@ public class ProductDetails {
 			{
 			
 			case 1 :
-				
+				invoice(email);
 				getbill(email);
+				updateInventory(email);
 				break;
 			case 2:
 				buy(email);
@@ -196,7 +201,9 @@ public class ProductDetails {
 				switch(option)
 				{
 				case 1 :
+					invoice(email);
 					getbill(email);
+					updateInventory(email);
 					break;
 				case 2:
 					buy(email);
@@ -233,7 +240,7 @@ public class ProductDetails {
 			String cemail=null;
 			Integer cq=0;
 			Integer id=0;
-			
+
 			System.out.println("___________________________________________________________________________________________________________________");
 			System.out.println(String.format("%-12s","|"+"Product Name")+String.format("%-25s","|"+"Product Price")+String.format("%-30s","|"+"Email")+String.format("%-20s", "|"+"Quantity")+String.format("%-20s", "|"+"Product Id"));
 			System.out.println("___________________________________________________________________________________________________________________");
@@ -245,10 +252,14 @@ public class ProductDetails {
 			    cq=c.getQuantity();
 			    id=c.getId();
 			    
-			    
-			    //System.out.println(productName + " - " + price + " - "+cemail+" - "+cq+" - "+id);  
+			    totalammount=totalammount+(price*cq); 
+			     
 			    System.out.println(String.format("%-12s","|"+productName)+String.format("%-25s","|"+price)+String.format("%-30s","|"+cemail)+String.format("%-20s", "|"+cq)+String.format("%-20s", "|"+id));
+			    
+			     
 			}
+			
+			System.out.println("Total Bill:  "+totalammount);
 		 
 		 
 			System.out.println();
@@ -260,21 +271,80 @@ public class ProductDetails {
 			
 		}
 	 
-//	 void viewcart()
-//		{
-//			int productID=0;
-//			System.out.println("Total Amount: "+totalammount);
-//			System.out.println();
-//			System.out.println("                        Cart");
-//			System.out.println();
-//			System.out.println("_________________________________________________________");
-//			System.out.println(String.format("%-12s","|"+"Product Id")+String.format("%-20s","|"+"Product Name")+String.format("%-30s","|"+"Quantity"));
-//			System.out.println("_________________________________________________________");
-//			for(Map.Entry m : addtocart.entrySet()){    
-//				productID=(int) m.getKey();
-//				System.out.println(String.format("%-12s","|"+m.getKey())+String.format("%-20s","|"+getNamefromDB(productID))+String.format("%-30s","|"+m.getValue()));
-//				
-//			   }
-//			System.out.println("_________________________________________________________");
-//		}
+	 void invoice(String email)
+	 {
+		 Date date= new Date();
+			long time = date.getTime();
+			Timestamp ts = new Timestamp(time);
+			
+			int productID=0;
+			Instant timestamp = Instant.now();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println("Here your Billl!!!!");
+			System.out.println();
+			System.out.println();
+			System.out.println("_________________________________________________________");
+			System.out.println("\t\tINVOICE\t\t");
+			System.out.println("_________________________________________________________");
+			System.out.println("Email:  "+email);
+			System.out.println("Date&Time: " + ts);
+			System.out.println("_________________________________________________________");
+	 }
+	 
+	 void updateInventory(String email)
+	 {
+		 	Configuration cfg=new Configuration();
+		 	cfg=cfg.configure("Hibernate.cfg.xml");
+		 	SessionFactory sf=cfg.buildSessionFactory();
+		 	Session s=sf.openSession();
+		 	Query q=s.createQuery("from Cart where email=:email");
+		 	q.setParameter("email", email);
+		 	List<Cart> productlist=q.getResultList();
+		 	Integer id=0;
+		 	Integer cq=0;
+		 	for (Cart c : productlist) {
+			    cq=c.getQuantity();
+			    id=c.getId();
+			    updateProducts(id,cq);
+			    updatecart(id,email);
+			}
+	 }
+	 
+	 void updateProducts(int productId,int purchasedquantity)
+	 {
+		 	Configuration cfg=new Configuration();
+		 	cfg=cfg.configure("Hibernate.cfg.xml");
+		 	SessionFactory sf=cfg.buildSessionFactory();
+		 	Session s=sf.openSession();
+		 	Transaction t=s.beginTransaction();
+		 	Query q=s.createQuery("From ProductDetails pd where pd.id=:productId");
+		 	q.setParameter("productId", productId);
+		 	ProductDetails p=(ProductDetails) q.uniqueResult();
+		 	int availableQuantity=p.getquantity();
+		 	System.out.println(availableQuantity);
+		 	availableQuantity=availableQuantity-purchasedquantity;
+		 	System.out.println(availableQuantity);
+		 	q=s.createQuery("update ProductDetails set quantity=:availableQuantity where id=:productId");
+		 	q.setParameter("productId", productId);
+		 	q.setParameter("availableQuantity", availableQuantity);
+		 	q.executeUpdate();
+		 	t.commit();
+	 }
+	 void updatecart(int productId,String email)
+	 {
+		 	Configuration cfg=new Configuration();
+		 	cfg=cfg.configure("Hibernate.cfg.xml");
+		 	SessionFactory sf=cfg.buildSessionFactory();
+		 	Session s=sf.openSession();
+		 	Transaction t=s.beginTransaction();
+		 	Query q=s.createQuery("delete from Cart where email=:email and id=:productId");
+		 	q.setParameter("productId", productId);
+		 	q.setParameter("email", email);
+		 	q.executeUpdate();
+		 	t.commit();
+	 }
 }

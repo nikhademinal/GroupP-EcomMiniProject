@@ -24,7 +24,7 @@ private String password=null;
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			System.out.println(e.fillInStackTrace());
 			authenticatefail();
 		}
 	}
